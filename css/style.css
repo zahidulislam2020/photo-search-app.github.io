@@ -1,0 +1,250 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  font-family: "Montserrat", sans-serif;
+  font-size: 100%;
+}
+body {
+  background-color: #e45866;
+  scroll-behavior: smooth;
+  /* padding-right: 15px; */
+}
+
+.home {
+	cursor: pointer;
+}
+
+.item a img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: fadeInAnimation ease 0.5s ;
+  animation-iteration-count: 1; 
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeInAnimation { 
+    0% { 
+        transform: scale(0.9); 
+    } 
+    100% { 
+        transform: scale(1); 
+     } 
+} 
+section {
+  /* height: 100vh; */
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+}
+.container {
+  background-color: white;
+  width: 95%;
+  /* max-width: 900px; */
+  margin: 0 auto;
+  box-shadow: 0px 0px 61px 7px #5e849c40;
+  border-radius: 10px;
+  text-align: center;
+}
+.header {
+  display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  width: 100%;
+  height: 15vh;
+  background: white;
+  margin-top: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.header h1 {
+  font-size: 40px;
+  font-weight: 900;
+  letter-spacing: -2px;
+  color: #133b6a;
+}
+
+.header h1 span {
+	color: #0c618c;
+}
+form {
+  margin-top: 30px;
+  width: 80%;
+  max-width: 300px;
+  position: relative;
+}
+input {
+  border: none;
+  border-bottom: 2px solid rgba(128, 128, 128, 0.479);
+  font-size: 20px;
+  width: 100%;
+  outline: none;
+  color: gray;
+  background-color: transparent;
+}
+input::placeholder {
+  opacity: 0.5;
+  color: gray;
+  font-family: "Montserrat";
+}
+form ion-icon {
+  position: absolute;
+  right: 0;
+  font-size: 20px;
+  opacity: 0.5;
+  color: gray;
+}
+.gallery {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  margin-top: 100px;
+  grid-gap: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.item {
+  width: 100%;
+  height: 180px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 5px;
+  transition: 0.3s ease box-shadow 0.3s, 0.3s ease transform;
+}
+
+.item:hover {
+  box-shadow: 0px 0px 20px 3px #00000042;
+}
+.item:nth-last-child(1) {
+  margin-bottom: 0;
+}
+.item h3 {
+  width: 100%;
+  padding: 10px;
+  position: absolute;
+  /* background-color: rgba(255, 255, 255, 0.8); */
+  color: white;
+  text-shadow: 2px 2px 2px black;
+  bottom: -90px;
+  font-weight: 300;
+  transition: 0.5s ease-in-out bottom 0.5s;
+  font-size: 12px;
+}
+.item:hover h3 {
+  bottom: 0;
+}
+
+span.photo-size {
+	position: absolute;
+	left: 0;
+	padding: 2px;
+	background: rgba(0, 0, 0, 0.5);
+	color: white;
+	font-size: 12px;
+	display: none;
+}
+
+.load-more {
+	margin-top: 40px;
+	margin-bottom: 40px;
+	padding: 20px 40px;
+	outline: none;
+	border: none;
+	background: #e45866 /*#a24a0a*/;
+	color: #ebebeb;
+	border-radius: 3px;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 18px;
+	box-shadow: 1px 1px 5px 0px #2b2b2b;
+}
+
+.load-more:active {
+	transform: scale(0.99);
+}
+
+.overlay-action {
+	width: 100%;
+	/* height: auto; */
+	position: absolute;
+	background:  rgba(0, 0, 0, 0.8);
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 100;
+}
+
+.modal-action {
+	width: 65%;
+	height: 95%;
+	position: fixed;
+	background:  transparent;
+	top: 50%;
+	bottom: 0;
+	left: 50%;
+	right: 0;
+	transform: translate(-50%, -50%);
+	overflow-y: hidden;
+}
+
+.modal-action img {
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+.cross {
+	position: fixed;
+	top: 1.5%;
+	left: 98%;
+	font-size: 26px;
+	color: #cccccc;
+	cursor: pointer;
+	z-index: 200;
+	transition: 0.5s color;
+	display: none;
+}
+
+.cross:hover {
+	color: white;
+}
+
+/* @media only screen and (min-width: 900px) { */
+  /* .container { */
+    /* max-width: 95%; */
+    /* padding: 30px; */
+  /* } */
+  /* .header { */
+    /* flex-direction: row; */
+    /* justify-content: space-between; */
+  /* } */
+  /* .header h1 { */
+    /* font-size: 50px; */
+  /* } */
+  /* .header input { */
+    /* font-size: 24px; */
+  /* } */
+  /* .header ion-icon { */
+    /* font-size: 24px; */
+  /* } */
+  /* .gallery { */
+    /* grid-gap: 30px; */
+  /* } */
+/* } */
+
+/* ********************* */
+/* This Code is for only the floating card in right bottom corner */
+/* ********************** */

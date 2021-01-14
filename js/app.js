@@ -31,7 +31,6 @@ async function getImg(pageIndex) {
 	const baseURL = `https://api.pexels.com/v1/curated?page=${pageIndex}&per_page=48`;
 	const data = await fetchImages(baseURL);
 	generateHTML(data.photos);
-	//console.log(data)	
 }
 async function fetchImages(baseURL) {
 	const response = await fetch(baseURL, {
@@ -103,8 +102,16 @@ function generateHTML(photos) {
 			crossBtn.style.display = 'inline-block';
 			header.style.position = 'static';
 			document.querySelector('section').style.width = '100%';
-			document.querySelector('.overlay-action').style.width = '100%';
-			document.querySelector('.overlay-action').style.height = `${scrollY}`;
+			//console.log(parseInt(scrollY) < parseInt('150%'))
+			//console.log(scrollY)
+			//document.querySelector('.overlay-action').style.width = '100%';
+			if(parseInt(scrollY) < parseInt('150%')) {
+				document.querySelector('.overlay-action').style.height = '200vh';
+				console.log('range within 150%')
+			}else {
+				document.querySelector('.overlay-action').style.height = `${scrollY}`;
+				console.log('range more than 150%')
+			}
 			document.querySelector('.overlay-action').style.zIndex = '400';
 						
 			for(let i = 0; i < photos.length; i++) {
@@ -136,42 +143,103 @@ function generateHTML(photos) {
 	crossBtn.addEventListener('click', modalDeactivating);
 }
 	
-				
-	window.addEventListener('scroll', () => {
-		document.documentElement.style.setProperty('--scroll-y', `${window.scrollY}%`);
-	});	
+window.addEventListener('scroll', () => {
+	document.documentElement.style.setProperty('--scroll-y', `${window.scrollY}%`);
+});	
+
 async function getSearchedImages(e) {
 	loadMore.setAttribute('data-img', 'search');
 	e.preventDefault();
 	galleryDiv.innerHTML = '';
 	let searchValue = document.querySelector('input').value;
+	pageIndex = 1;
 	if(searchValue === '') {
-		return galleryDiv.innerHTML = 'Enter a Search keyword';
+		clearTimeout(stopId);
+		galleryDiv.innerHTML = '';
+		enterSearchKeyword();
 	}else {
+		clearTimeout(stopId);
+		galleryDiv.style.visibility = "visible";
+		galleryDiv.innerHTML = '';
 		currentSearchedWord = searchValue;
-		const baseURL = `https://api.pexels.com/v1/search?query=${searchValue}&page=1&per_page=48`;
-		const data = await fetchImages(baseURL);
+		let baseURL = `https://api.pexels.com/v1/search?query=${searchValue}&page=1&per_page=48`;
+		let data = await fetchImages(baseURL);
 		generateHTML(data.photos);
-		//resetting Search Field
 		document.querySelector('input').value = '';
+		
+		if(data.photos.length === 0) {
+		clearTimeout(stopId);
+		galleryDiv.innerHTML = '';
+		emptyKeyword()
+	}
 	}
 }
-async function getMoreSearchedImages(index) {
+async function getMoreSearchedImages(searchIndex) {
 	let searchValue = currentSearchedWord;
-	const baseURL = `https://api.pexels.com/v1/search?query=${searchValue}&page=${index}&per_page=48`;
+	const baseURL = `https://api.pexels.com/v1/search?query=${searchValue}&page=${searchIndex}&per_page=48`;
 	const data = await fetchImages(baseURL);
 	generateHTML(data.photos);
 }
 function loadMoreImages(e) {
-	let index = ++pageIndex;
+	
 	let loadMoreData = e.target.getAttribute('data-img');
+
 	if(loadMoreData === 'curated') {
+		let index = ++pageIndex;
 		getImg(index)
+		//console.log(index)
 	}else if (loadMoreData === 'search') {
-		pageIndex = 1;
-		index = ++pageIndex;
-		getMoreSearchedImages(index)
+		
+		let searchIndex = ++pageIndex;
+		getMoreSearchedImages(searchIndex)
+		//console.log(searchIndex)
+		
 	}
+}
+
+let isShown = false;
+let stopId;
+
+function enterSearchKeyword() {
+	galleryDiv.innerHTML = 'Enter search keyword';
+	galleryDiv.style.color = 'red';
+	galleryDiv.style.fontWeight = '500';
+	stopId = setTimeout(function() {
+		if(!isShown) {
+			galleryDiv.style.visibility = "hidden";
+			setTimeout(function(){
+				isShown = true;
+				enterSearchKeyword()
+			})
+		}else if(isShown) {
+			galleryDiv.style.visibility = "visible";
+				setTimeout(function(){
+					isShown = false;
+					enterSearchKeyword()
+				})
+		}
+	}, 600)
+}
+
+function emptyKeyword() {
+	galleryDiv.innerHTML = 'Your search keyword not found!!! Try with different keyword';
+	galleryDiv.style.color = 'red';
+	galleryDiv.style.fontWeight = '500';
+	stopId = setTimeout(function() {
+		if(!isShown) {
+			galleryDiv.style.visibility = "hidden";
+			setTimeout(function(){
+				isShown = true;
+				emptyKeyword()
+			})
+		}else if(isShown) {
+			galleryDiv.style.visibility = "visible";
+				setTimeout(function(){
+					isShown = false;
+					emptyKeyword()
+				})
+		}
+	}, 600)
 }
 
 /////////////////////////////////////////////////////////
